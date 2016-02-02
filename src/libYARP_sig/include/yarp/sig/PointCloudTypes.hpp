@@ -21,6 +21,7 @@ namespace yarp {
     namespace sig {
         class PointCloud;
         class PointCloud_NetworkHeader;
+//         struct XYZ_RGBA_DATA;
     }
 }
 

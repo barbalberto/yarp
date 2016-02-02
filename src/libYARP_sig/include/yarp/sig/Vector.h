@@ -275,6 +275,11 @@ public:
     {
         return VectorBase::write(connection);
     }
+
+    virtual yarp::os::ConstString toString() const
+    {
+        return yarp::os::ConstString("");
+    }
 };
 
 
