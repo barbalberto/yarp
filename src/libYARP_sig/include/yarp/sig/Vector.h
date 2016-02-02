@@ -257,6 +257,24 @@ public:
         len = 0;
         first = nullptr;
     }
+
+    /*
+    * Read vector from a connection.
+    * return true iff a vector was read correctly
+    */
+    virtual bool read(yarp::os::ConnectionReader& connection)
+    {
+        return VectorBase::read(connection);
+    }
+
+    /**
+    * Write vector to a connection.
+    * return true iff a vector was written correctly
+    */
+    virtual bool write(yarp::os::ConnectionWriter& connection)
+    {
+        return VectorBase::write(connection);
+    }
 };
 
 
