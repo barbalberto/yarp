@@ -21,7 +21,7 @@ using namespace yarp::os;
 using namespace yarp::sig;
 using namespace std;
 
-#define dbg_printf if (0) printf
+#define dbg_printf if (1) printf
 
 void TcpRosCarrier::setParameters(const Bytes& header) {
     if (header.length()!=8) {
@@ -128,6 +128,7 @@ bool TcpRosCarrier::sendHeader(ConnectionState& proto) {
     }
     header.data[mode.c_str()] = modeValue.c_str();
     header.data["md5sum"] = (md5sum!="")?md5sum:"*";
+    std::cout << "Message definition is " << message_definition.c_str() << std::endl;
     if (message_definition!="") {
         header.data["message_definition"] = message_definition;
     }

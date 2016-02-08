@@ -21,7 +21,7 @@
 using namespace yarp::os;
 using namespace std;
 
-#define dbg_printf if (0) printf
+#define dbg_printf if (1) printf
 
 YARP_SSIZE_T TcpRosStream::read(const Bytes& b) {
     if (!setInitiative) {
@@ -178,9 +178,11 @@ std::string TcpRosStream::rosToKind(const char *rosname) {
     if (ConstString(rosname)=="") return "";
     std::map<std::string, std::string> kinds = rosToKind();
 
+    // find for ros msg type into a map of compiled-time known types
     if (kinds.find(rosname)!=kinds.end()) {
         return kinds[rosname];
     }
+    // if not found previously, invoke yarpidl_rosmsg at run time and look there as well
     Port port;
     port.openFake("yarpidl_rosmsg");
     if (port.addOutput("/typ")) {
@@ -193,6 +195,7 @@ std::string TcpRosStream::rosToKind(const char *rosname) {
         if (txt!="?") return txt;
     }
     port.close();
+    // If not found even there (or we were not able to connect to idl), then give up
     if (ConstString(rosname)!="") {
         fprintf(stderr, "Do not know anything about type '%s'\n", rosname);
         fprintf(stderr, "Could not connect to a type server to look up type '%s'\n", rosname);

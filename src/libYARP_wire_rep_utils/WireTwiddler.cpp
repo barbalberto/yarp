@@ -30,7 +30,7 @@
 using namespace std;
 using namespace yarp::os;
 
-#define dbg_flag 0
+#define dbg_flag 1
 #define dbg_printf if (dbg_flag) printf
 
 WireTwiddlerWriter::~WireTwiddlerWriter() {

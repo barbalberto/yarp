@@ -22,7 +22,7 @@
 using namespace yarp::os;
 using namespace yarp::os::impl;
 
-#define dbg_printf if (0) printf
+#define dbg_printf if (1) printf
 
 RosNameSpace::RosNameSpace(const Contact& contact) : mutex(1) {
     this->contact = contact;

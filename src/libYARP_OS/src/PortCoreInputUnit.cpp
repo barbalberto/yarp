@@ -93,7 +93,6 @@ bool PortCoreInputUnit::start() {
     return result;
 }
 
-
 void PortCoreInputUnit::run() {
     running = true;
     phase.post();

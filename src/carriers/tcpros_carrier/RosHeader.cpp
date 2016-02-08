@@ -68,6 +68,7 @@ bool RosHeader::readHeader(const string& bin) {
     unsigned int len = bin.length();
     char *at = (char*) bin.c_str();
 
+    printf("RosHeader::readHeader(...)\n");
     while (len>0) {
         Bytes bytes(at,4);
         int slen = NetType::netInt(bytes);
@@ -80,7 +81,7 @@ bool RosHeader::readHeader(const string& bin) {
         }
         string key = keyval.substr(0,delim);
         string val = keyval.substr(delim+1);
-        //printf("key %s => val %s\n", key.c_str(), val.c_str());
+        printf("key %s => val %s\n", key.c_str(), val.c_str());
         data[key] = val;
         at += slen;
         len -= slen;
