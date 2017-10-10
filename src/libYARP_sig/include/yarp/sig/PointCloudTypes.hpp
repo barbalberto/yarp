@@ -139,7 +139,7 @@ typedef struct
             float x;
             float y;
             float z;
-            float xyzpadding;
+            float xyz_padding;
         };
     };
 
@@ -205,7 +205,7 @@ typedef struct
         {
             float strength;
         };
-        float filler_p[4];
+        float strength_padding[4];
     };
 } INTEREST_POINT_XYZ_DATA;
 YARP_END_PACK

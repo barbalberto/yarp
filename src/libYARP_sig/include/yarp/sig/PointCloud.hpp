@@ -25,14 +25,19 @@ class yarp::sig::PointCloud: public yarp::os::Portable
 {
 public:
     // Usage stuff
-    virtual void resize(int width, int height)                          { data.resize(width * height); header.width = width; header.height = height;};
+    virtual void resize(int width, int height)
+    {
+        header.width = width;
+        header.height = height;
+        data.resize(width * height);
+    };
 
-    int wireSize()
+    int wireSizeBytes()
     {
         return sizeof(header) + header.width*header.height*(sizeof(XYZ_RGBA_DATA::_xyz)+sizeof(XYZ_RGBA_DATA::rgba));
     }
 
-    int memSize() const
+    int dataSizeBytes() const
     {
         return /*sizeof(header) +*/ header.width*header.height*(sizeof(T));
     }
@@ -270,7 +275,7 @@ namespace yarp{
         yarp::os::ConstString out;
         const size_t pointsNum = this->header.width * this->header.height;
 
-        yInfo() << "memSize is " << memSize() << "; data on wire are " << wireSize();
+        yInfo() << "memSize is " << dataSizeBytes() << "; data on wire are " << wireSizeBytes();
         char tmp[350];
         if(width<0)
         {
