@@ -2066,8 +2066,8 @@ bool PortCore::adminBlock(ConnectionReader& reader,
             ConstString topic =
                 RosNameSpace::fromRosName(cmd.get(2).asString());
 
-            std::cout << "WholeInput: " << cmd.toString().c_str() << std::endl;
-            std::cout << "topicName: " << topic.c_str() << std::endl;
+//            std::cout << "WholeInput: " << cmd.toString().c_str() << std::endl;
+//            std::cout << "topicName: " << topic.c_str() << std::endl;
             Bottle *pubs = cmd.get(3).asList();
             if (pubs!=nullptr) {
                 Property listed;

@@ -128,7 +128,7 @@ bool TcpRosCarrier::sendHeader(ConnectionState& proto) {
     }
     header.data[mode.c_str()] = modeValue.c_str();
     header.data["md5sum"] = (md5sum!="")?md5sum:"*";
-    std::cout << "Message definition is " << message_definition.c_str() << std::endl;
+//    std::cout << "Message definition is " << message_definition.c_str() << std::endl;
     if (message_definition!="") {
         header.data["message_definition"] = message_definition;
     }
