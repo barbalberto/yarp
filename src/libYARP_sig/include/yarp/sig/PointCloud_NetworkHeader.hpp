@@ -94,6 +94,29 @@ std::map<std::pair<int, int>, int> offsetMap = {
 //    // PCL_XYZ_I_NORMAL TBD... problems with curvature
                                  };
 
+
+std::map<int, std::vector<int> > compositionMap = {
+    // PCL_POINT_XYZ_RGBA
+    {PCL_POINT_XYZ_RGBA, std::vector<int> {PC_XYZ_DATA, PC_RGBA_DATA}},
+    // PCL_POINT_XYZ_I
+    {PCL_POINT_XYZ_I, std::vector<int> {PC_XYZ_DATA, PC_INTENSITY_DATA}},
+    // PCL_INTEREST_POINT_XYZ
+    {PCL_INTEREST_POINT_XYZ, std::vector<int> {PC_XYZ_DATA, PC_INTEREST_DATA}},
+    // PCL_POINT_XYZ_NORMAL
+    {PCL_POINT_XYZ_NORMAL, std::vector<int> {PC_XYZ_DATA, PC_NORMAL_DATA}}
+
+};
+
+std::map<int, size_t> sizeMap = {
+    {PC_XY_DATA, sizeof(XY_DATA)},
+    {PC_XYZ_DATA, sizeof(XYZ_DATA)},
+    {PC_RGBA_DATA, sizeof(RGBA_DATA)},
+    {PC_INTENSITY_DATA, sizeof(intensity)},
+    {PC_INTEREST_DATA, sizeof(strength)},
+    {PC_NORMAL_DATA, sizeof(NORMAL_DATA)},
+    {PC_RANGE_DATA, sizeof(range)},
+    {PC_VIEWPOINT_DATA, sizeof(VIEWPOINT_DATA)},
+};
 // Defined as in PCL pointTypes.h file for better compatibility
 enum BorderTrait
 {

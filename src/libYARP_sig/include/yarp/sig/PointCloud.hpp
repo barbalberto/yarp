@@ -71,121 +71,32 @@ public:
 
         yAssert(tmp != nullptr);
 
-        char * d;
-        if(_header.pointType == PCL_POINT_XYZ_RGBA)
-        {
-            d = new XYZ_RGBA_DATA;
-        }
+        // Skip the vector header....
         connection.expectInt(); // Code auto-generated do not remove
         connection.expectInt(); // Code auto-generated do not remove
 
-        if ((header.pointType & PC_XY_DATA) && (_header.pointType & PC_XY_DATA))
+        std::vector<int> recipe = getComposition(_header.pointType);
+
+
+        yarp::os::ManagedBytes dummy;
+        for (uint i=0; i<data.size(); i++)
         {
-            yInfo("I contain XY\n");
-            size_t offset = getOffset(header.pointType, PC_XY_DATA);
-            for(uint i=0; i<data.size(); i++)
+            for (size_t j = 0; j<recipe.size(); j++)
             {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i]+offset, sizeof(XY_DATA));
-        //         yDebug() << "x: " << tmp[i].x << "y: " << tmp[i].y << "z: " << tmp[i].z;
-        //         yDebug() << "r: " << (u_int8_t)tmp[i].r << "g: " << (u_int8_t)tmp[i].g << "b: " << (u_int8_t)tmp[i].b << "\n";
+                size_t sizeToRead = sizeMap.find(recipe[j])->second;
+                if ((header.pointType & recipe[j]))
+                {
+                    size_t offset = getOffset(header.pointType, recipe[j]);
+                    connection.expectBlock((char*) &tmp[i]+offset, sizeToRead);
+                }
+                else
+                {
+                    dummy.allocateOnNeed(sizeToRead, sizeToRead);
+                    connection.expectBlock(dummy.bytes().get(), sizeToRead);
+                }
             }
-
-        }
-        if ((header.pointType & PC_XYZ_DATA) && (_header.pointType & PC_XYZ_DATA))
-        {
-            yInfo("I contain XYZ\n");
-            size_t offset = getOffset(header.pointType, PC_XYZ_DATA);
-            yDebug()<<"Offset..."<<offset;
-            yDebug()<<"sizzzzeee"<<sizeof(XYZ_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(XYZ_DATA));
-        //         yDebug() << "x: " << tmp[i].x << "y: " << tmp[i].y << "z: " << tmp[i].z;
-        //         yDebug() << "r: " << (u_int8_t)tmp[i].r << "g: " << (u_int8_t)tmp[i].g << "b: " << (u_int8_t)tmp[i].b << "\n";
-            }
-
-
-        }
-        if ((header.pointType & PC_RGBA_DATA) && (_header.pointType & PC_RGBA_DATA))
-        {
-            yInfo("I contain RGBA\n");
-            size_t offset = getOffset(header.pointType, PC_RGBA_DATA);
-            yDebug()<<"Offset..."<<offset;
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(RGBA_DATA));
-        //         yDebug() << "r: " << (u_int8_t)tmp[i].r << "g: " << (u_int8_t)tmp[i].g << "b: " << (u_int8_t)tmp[i].b << "\n";
-            }
-
-
-        }
-        if ((header.pointType & PC_INTENSITY_DATA) && (_header.pointType & PC_INTENSITY_DATA))
-        {
-            yInfo("I contain I\n");
-            size_t offset = getOffset(header.pointType, PC_INTENSITY_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(intensity));
-            }
-
-        }
-        if ((header.pointType & PC_INTEREST_DATA) && (_header.pointType & PC_INTEREST_DATA))
-        {
-            size_t offset = getOffset(header.pointType, PC_INTEREST_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(strength));
-            }
-
-        }
-        if ((header.pointType & PC_NORMAL_DATA) && (_header.pointType & PC_NORMAL_DATA))
-        {
-            size_t offset = getOffset(header.pointType, PC_NORMAL_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(NORMAL_DATA));
-            }
-
-        }
-        if ((header.pointType & PC_RANGE_DATA) && (_header.pointType & PC_RANGE_DATA))
-        {
-            yInfo("I contain RANGE\n");
-            size_t offset = getOffset(header.pointType, PC_RANGE_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(range));
-            }
-
-        }
-       if ((header.pointType & PC_VIEWPOINT_DATA) && (_header.pointType & PC_VIEWPOINT_DATA))
-        {
-           yInfo("I contain VP\n");
-           size_t offset = getOffset(header.pointType, PC_VIEWPOINT_DATA);
-            for(uint i=0; i<data.size(); i++)
-            {
-                // Copy data stripping out padding bytes ( remove unused memory to optimize size for transmission over network)
-                // --> if both sender and receiver are on the same machine, can I leverage on IPC to just copy stuff
-                connection.expectBlock((char*) &tmp[i] + offset, sizeof(VIEWPOINT_DATA)); // ????
-            }
-
         }
 
-        // if someone is foolish enough to connect in text mode,
-        // let them see something readable.
         connection.convertTextMode();
         return true;
     }
@@ -212,11 +123,23 @@ public:
 
  private:
     yarp::sig::PointCloud_NetworkHeader    header;
+
+    std::vector<int> getComposition(int type_composite)
+    {
+        //todo probably
+        std::vector<int> ret;
+        auto it = compositionMap.find(type_composite);
+        if (it != compositionMap.end())
+        {
+            ret = it->second;
+        }
+        return ret;
+    }
     size_t getOffset(int type_composite, int type_basic)
     {
         size_t offset = 0;
         auto it = offsetMap.find(std::make_pair(type_composite, type_basic));
-        if(it != offsetMap.end())
+        if (it != offsetMap.end())
         {
             offset = it->second;
         }

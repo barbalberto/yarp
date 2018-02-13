@@ -41,8 +41,8 @@ public:
         checkTrue(inPort.open("/test/pointcloud/in"),"Opening input port");
         checkTrue(NetworkBase::connect(outPort.getName(), inPort.getName()),"Checking connection");
         PointCloud<XYZ_RGBA_DATA>& testPC = outPort.prepare();
-        int width  = 2;
-        int height = 2;
+        int width  = 100;
+        int height = 20;
         testPC.resize(width, height);
 
         for (int i=0; i<width*height; i++)
@@ -63,30 +63,18 @@ public:
         PointCloud<XYZ_RGBA_DATA> inCloud;
         inPort.read(inCloud);
 
-        yInfo()<<"Size out"<<testPC.dataSizeBytes();
-        yInfo()<<"Size in"<<inCloud.dataSizeBytes();
-
         checkTrue(inCloud.dataSizeBytes() == testPC.dataSizeBytes(), "Checking size consistency");
 
         bool ok = true;
         for (int i=0; i<width*height; i++)
         {
             ok &= inCloud.data[i].x == i;
-            yInfo("x %f %d\n",inCloud.data[i].x,i);
             ok &= inCloud.data[i].y == i + 1;
-            yInfo("y %f %d\n", inCloud.data[i].y, i + 1);
             ok &= inCloud.data[i].z == i + 2;
-            yInfo("z %f %d\n", inCloud.data[i].z, i + 2);
             ok &= inCloud.data[i].r == '1';
-            yInfo("r %c 1\n", inCloud.data[i].r );
             ok &= inCloud.data[i].g == '2';
-            yInfo("g %c 2\n", inCloud.data[i].g );
             ok &= inCloud.data[i].b == '3';
-            yInfo("b %c 3\n", inCloud.data[i].b );
             ok &= inCloud.data[i].a == '4';
-            yInfo("a %c 4\n", inCloud.data[i].a );
-
-            yInfo("****************************\n\n");
         }
 
         checkTrue(ok, "Checking data validity");
