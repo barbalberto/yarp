@@ -18,6 +18,9 @@ add_subdirectory(libYARP_eigen)
 add_subdirectory(libYARP_gsl)
 add_subdirectory(libYARP_math)
 add_subdirectory(libYARP_dev)
+if(PCL_FOUND)
+  add_subdirectory(libYARP_pcl)
+endif()
 
 # private libraries
 add_subdirectory(libYARP_name)

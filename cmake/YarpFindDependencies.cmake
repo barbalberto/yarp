@@ -487,6 +487,9 @@ checkandset_dependency(BISON)
 find_package(FLEX QUIET)
 checkandset_dependency(FLEX)
 
+find_package(PCL QUIET)
+checkandset_dependency(PCL)
+
 # PRINT DEPENDENCIES STATUS:
 
 message(STATUS "I have found the following libraries:")
@@ -528,6 +531,7 @@ print_dependency(GStreamer)
 print_dependency(GStreamerPluginsBase)
 print_dependency(BISON)
 print_dependency(FLEX)
+print_dependency(PCL)
 
 
 # CHECK DEPENDENCIES:
