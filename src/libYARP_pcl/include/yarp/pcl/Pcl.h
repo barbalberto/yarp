@@ -11,7 +11,7 @@
 #define YARP_PCL_PCL_H
 
 #include <pcl/io/pcd_io.h>
-#include <yarp/sig/PointCloud.hpp>
+#include <yarp/sig/PointCloud.h>
 
 namespace yarp
 {
