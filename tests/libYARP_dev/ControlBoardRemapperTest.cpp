@@ -12,6 +12,7 @@
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/PolyDriverList.h>
 #include <yarp/dev/Wrapper.h>
+#include <yarp/os/LogStream.h>
 
 #include <vector>
 
@@ -63,6 +64,8 @@ const char *wrapperC_file_content   = "device controlboardwrapper2\n"
 
 static void checkRemapper(yarp::dev::PolyDriver & ddRemapper, int rand, size_t nrOfRemappedAxes)
 {
+    yInfo() << "checkRemapper starts";
+
     IPositionControl *pos = nullptr;
     REQUIRE(ddRemapper.view(pos)); // interface position correctly opened
     int axes = 0;
@@ -145,6 +148,8 @@ static void checkRemapper(yarp::dev::PolyDriver & ddRemapper, int rand, size_t n
     {
         CHECK(setPosition[i] == readedEncoders[i]); // Setted position and readed encoders match
     }
+    yInfo() << "checkRemapper done";
+    yarp::os::Time::delay(0.01);
 }
 
 
@@ -313,6 +318,7 @@ TEST_CASE("dev::ControlBoardRemapperTest", "[yarp::dev]")
         imultwrap->detachAll();
         ddRemapper.close();
         ddRemoteRemapper.close();
+
 
         for(int i=0; i < 3; i++)
         {
